@@ -904,7 +904,39 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = {
+        'bash',
+        'blade',
+        'c',
+        'css',
+        'diff',
+        'dockerfile',
+        'git_config',
+        'git_rebase',
+        'gitattributes',
+        'gitcommit',
+        'gitignore',
+        'html',
+        'javascript',
+        'json',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'php',
+        'php_only',
+        'phpdoc',
+        'python',
+        'regex',
+        'query',
+        'sql',
+        'typescript',
+        'vim',
+        'vimdoc',
+        'vue',
+        'xml',
+        'yaml',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -916,6 +948,26 @@ require('lazy').setup({
       },
       indent = { enable = true, disable = { 'ruby' } },
     },
+    config = function(_, opts)
+      local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
+
+      parser_config.blade = {
+        install_info = {
+          url = 'https://github.com/EmranMR/tree-sitter-blade',
+          files = { 'src/parser.c' },
+          branch = 'main',
+        },
+        filetype = 'blade',
+      }
+
+      vim.filetype.add {
+        pattern = {
+          ['.*%.blade%.php'] = 'blade',
+        },
+      }
+
+      require('nvim-treesitter.configs').setup(opts)
+    end,
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
     --
